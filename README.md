@@ -2,7 +2,7 @@
 
 The National Library of Medicine's standardized drug nomenclature. Every prescription, OTC drug, and ingredient in the US healthcare system has an RxCUI (a stable concept ID). RxNorm normalizes drug naming chaos: "Tylenol" and "acetaminophen" and "APAP" all resolve to the same ingredient concept. Free, no auth.
 
-Part of [Pipeworx](https://pipeworx.io) — an MCP gateway connecting AI agents to 1394+ live data sources.
+Part of [Pipeworx](https://pipeworx.io) — an MCP gateway connecting AI agents to 1476+ live data sources.
 
 ## Why this matters for AI agents
 
@@ -14,7 +14,7 @@ Three core flows:
 
 **2. Get drug properties.** "What's this RxCUI?" → `rxnorm_get_properties({rxcui})` → ingredient name, strength, dose form, brand status.
 
-**3. Drug interactions.** "What does this interact with?" → `rxnorm_interactions({rxcui})` → known drug-drug interactions with severity.
+**3. Drug interactions — not available.** NLM discontinued the RxNav interaction API in January 2024 and nothing replaced it, so this pack has no `rxnorm_interactions` tool and Pipeworx has no drug-drug interaction source. `pharma_safety_report` returns the FDA label's own Drug Interactions section, which documents one drug rather than checking a pair; a drug missing from that text has not been cleared.
 
 For full drug-safety synthesis combining RxNorm + FDA + ClinicalTrials, use [`compare_entities({type: "drug", values})`] or the `pharma_drug_profile` compound.
 
@@ -67,7 +67,25 @@ Add to your MCP client (Claude Desktop, Cursor, Windsurf, etc.):
 }
 ```
 
-Or connect to the full Pipeworx gateway for access to all 1394+ data sources:
+### What this endpoint actually serves
+
+`tools/list` at `https://gateway.pipeworx.io/rxnorm/mcp` returns the tools in the table
+above **plus the shared Pipeworx meta-tools** — `ask_pipeworx`,
+`discover_tools`, `search_within`, `remember`/`recall` and the rest of the
+gateway-wide set. So the tool count you see is larger than this table: a
+single-pack endpoint currently lists roughly 30 shared tools alongside the
+pack's own. The connection's `initialize` response states its exact scope, and
+is the authoritative answer for a given day.
+
+This is deliberate, not multiplexing by accident. The meta-tools are what let a
+scoped connection answer a question this pack does not cover — via
+`ask_pipeworx`, which routes across the whole catalog — without you adding a
+second MCP server. There is currently no way to mount a pack endpoint without
+them; if the extra schemas cost you more context than the routing is worth,
+connect to the full gateway once rather than to several pack endpoints.
+
+Or connect to the full Pipeworx gateway to get every pack's tools listed
+directly, instead of just this one's:
 
 ```json
 {
@@ -79,9 +97,14 @@ Or connect to the full Pipeworx gateway for access to all 1394+ data sources:
 }
 ```
 
+Both URLs reach the same gateway and the same 1476+ data sources. The
+only difference is which pack's tools are listed **directly**; `ask_pipeworx`
+reaches all of them from either one.
+
 ## Using with ask_pipeworx
 
-Instead of calling tools directly, you can ask questions in plain English:
+Instead of calling tools directly, you can ask questions in plain English —
+this works on the pack endpoint above as well as on the full gateway:
 
 ```
 ask_pipeworx({ question: "your question about Rxnorm data" })
