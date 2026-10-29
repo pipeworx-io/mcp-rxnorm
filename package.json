@@ -1,12 +1,20 @@
 {
   "name": "@pipeworx/mcp-rxnorm",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "RxNorm MCP — wraps the NLM RxNav REST API (free, no auth)",
   "type": "module",
-  "main": "src/index.ts",
-  "types": "src/index.ts",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./tools.json": "./tools.json",
+    "./package.json": "./package.json"
+  },
   "bin": {
     "mcp-rxnorm": "bin/cli.js"
+  },
+  "files": ["bin/", "lib/", "tools.json", "server.json"],
+  "engines": {
+    "node": ">=18"
   },
   "keywords": ["mcp", "mcp-server", "model-context-protocol", "pipeworx", "rxnorm"],
   "license": "MIT",
@@ -14,19 +22,12 @@
     "type": "git",
     "url": "git+https://github.com/pipeworx-io/mcp-rxnorm.git"
   },
-  "scripts": {
-    "typecheck": "tsc --noEmit"
-  },
-  "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.30.0",
-    "tsx": "^4.19.0"
-  },
-  "devDependencies": {
-    "typescript": "^5.9.3",
-    "@cloudflare/workers-types": "^4.20260405.1"
-  },
+  "mcpName": "io.github.pipeworx-io/rxnorm",
   "pipeworx": {
-    "sourceHash": "v1-f15f473690f94d1d004a9404476d64bc3c167da66c62b8be9f0c2249f69cedbf",
-    "sourceCommit": "6fe8fb3e01138dfc4ebe7d5c246503aab9278d06"
+    "mode": "gateway",
+    "slug": "rxnorm",
+    "gatewaySlug": "rxnorm",
+    "sourceHash": "v1-c4d0db99c712db6cbda1a6038da2a9ae4c40839de9c3146ef1f19fe81cac356b",
+    "sourceCommit": "6bae4cfa7b6a73bbe014dc8820a19c80c842b21e"
   }
 }
