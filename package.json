@@ -1,6 +1,6 @@
 {
   "name": "@pipeworx/mcp-rxnorm",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "RxNorm MCP — wraps the NLM RxNav REST API (free, no auth)",
   "type": "module",
   "main": "lib/index.js",
@@ -27,7 +27,7 @@
     "mode": "gateway",
     "slug": "rxnorm",
     "gatewaySlug": "rxnorm",
-    "sourceHash": "v1-c4d0db99c712db6cbda1a6038da2a9ae4c40839de9c3146ef1f19fe81cac356b",
-    "sourceCommit": "6bae4cfa7b6a73bbe014dc8820a19c80c842b21e"
+    "sourceHash": "v1-25b8be044ca5adb28d6be914fdc05b14af9e5ac2fa3c233954a1facf9618446a",
+    "sourceCommit": "db27387ed3ef7ec4805d465f7964a7f65f937006"
   }
 }
